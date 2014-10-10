@@ -115,6 +115,7 @@
                                             : y;
                             return (adjustedY * maxX) + adjustedX;
                         }
+                        
                         function getLiveNeighborCount(allCells) {
                             var liveNeighborCount = 0;
                             var neighborCount = neighborIndices.length;
@@ -163,6 +164,7 @@
                             gen[i].update(gen);
                         }
                     }
+                    
                     function commit(gen) {
                         var cellCount = gen.length;
                         for (var i = 0; i < cellCount; ++i) {
