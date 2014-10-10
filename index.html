@@ -71,6 +71,141 @@
         /////
         // Insert your game logic here and wire up to the "runButton" control
         /////
+        gol.simulation = (function () {
+            var runHandle = null;
+            
+            var currentGeneration = (function () {
+                function getTableElement(cell) {
+                    return document.getElementById(cell.getX() + 'x' + cell.getY());
+                }
+                return {
+                    updateCell: function (cell) {
+                        var td = getTableElement(cell);
+                        gol.utility[cell.isAlive ? 'markCell' : 'clearCell'](td);
+                    },
+                    isCellLive: function (cell) {
+                        var td = getTableElement(cell);
+                        return /\bmarked\b/.test(td.className);
+                    }
+                };
+            })();
+            
+            function init () {
+                var ecosystem = (function () {
+                    var maxX = +document.getElementById('columnCount').value || 0;
+                    var maxY = +document.getElementById('rowCount').value || 0;
+                    
+                    function makeCell(x, y) {
+                        function getIndex(x, y) {
+                            var adjustedX = x >= maxX ? 0
+                                            : x < 0 ? maxX - 1
+                                            : x;
+                            var adjustedY = y >= maxY ? 0
+                                            : y < 0 ? maxY - 1
+                                            : y;
+                            return (adjustedY * maxX) + adjustedX;
+                        }
+                        
+                        var neighborIndices = [
+                            getIndex(x - 1, y - 1),
+                            getIndex(x, y - 1),
+                            getIndex(x + 1, y - 1),
+                            getIndex(x - 1, y),
+                            getIndex(x + 1, y),
+                            getIndex(x - 1, y + 1),
+                            getIndex(x, y + 1),
+                            getIndex(x + 1, y + 1),
+                        ];
+                        
+                        function getLiveNeighborCount(allCells) {
+                            var liveNeighborCount = 0;
+                            var neighborCount = neighborIndices.length;
+                            for (var i = 0; i < neighborCount; ++i) {
+                                var cell = allCells[neighborIndices[i]];
+                                var wasNeighborAlive = currentGeneration.isCellLive(cell);
+                                liveNeighborCount += wasNeighborAlive ? 1 : 0;
+                            }
+                            return liveNeighborCount;
+                        }
+                        return {
+                            isAlive: false,
+                            getX: function () {
+                                return x;
+                            },
+                            getY: function () {
+                                return y;
+                            },
+                            updateCellState: function (allCells) {
+                                var liveCount = getLiveNeighborCount(allCells);
+                                var wasAlive = currentGeneration.isCellLive(this);
+                                this.isAlive = wasAlive
+                                                ? liveCount >=2 && liveCount <= 3
+                                                : liveCount == 3;
+                            }
+                        };
+                    }
+                    
+                    return {
+                        build: function () {
+                            var cells = [];
+                            for (var i = 0; i < maxY; ++i) {
+                                for (var j = 0; j < maxX; ++j) {
+                                    cells.push(makeCell(j, i));
+                                }
+                            }
+                            return cells;
+                        }
+                    };
+                })();
+                
+                var nextGeneration = ecosystem.build();
+                
+                var step = (function (nextGen) {
+                    function calculate(gen) {
+                        var cellsLength = gen.length;
+                        for (var i = 0; i < cellsLength; ++i) {
+                            var cell = gen[i];
+                            cell.updateCellState(gen);
+                        }
+                    }
+                    function commit(gen) {
+                        var cellsLength = gen.length;
+                        for (var i = 0; i < cellsLength; ++i) {
+                            var cell = gen[i];
+                            currentGeneration.updateCell(cell);
+                        }
+                    }
+                    return function () {
+                        calculate(nextGen);
+                        commit(nextGen);
+                    };
+                })(nextGeneration);
+                
+                return setInterval(step, 200);
+            }
+            
+            return {
+                start: function () {
+                    runHandle = init();
+                },
+                stop: function () {
+                    clearInterval(runHandle);
+                }
+            };
+        })();
+        
+        $(function () {
+            $('#runButton').on('click', function () {
+                if ($(this).data('running')) {
+                    gol.simulation.stop();
+                    $(this).text('Start').removeData('running');
+                }
+                else {
+                    $(this).text('Stop').data('running', true);
+                    gol.simulation.start();
+                }
+            });
+        });
     </script>
     <script>
         // initialize controls and draw the board
