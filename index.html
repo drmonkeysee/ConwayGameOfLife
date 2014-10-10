@@ -117,9 +117,9 @@
                         
                         function getLiveNeighborCount(allCells) {
                             var liveNeighborCount = 0;
-                            for (var i = 0; i < neighborIndices.length; ++i) {
-                                var cell = allCells[neighborIndices[i]];
-                                liveNeighborCount += +currentGeneration.isCellLive(cell) || 0;
+                            var neighborCount = neighborIndices.length;
+                            for (var i = 0; i < neighborCount; ++i) {
+                                liveNeighborCount += +currentGeneration.isCellLive(allCells[neighborIndices[i]]) || 0;
                             }
                             return liveNeighborCount;
                         }
@@ -158,13 +158,14 @@
                 
                 var step = (function (nextGen) {
                     function calculate(gen) {
-                        for (var i = 0; i < gen.length; ++i) {
-                            var cell = gen[i];
-                            cell.update(gen);
+                        var cellCount = gen.length;
+                        for (var i = 0; i < cellCount; ++i) {
+                            gen[i].update(gen);
                         }
                     }
                     function commit(gen) {
-                        for (var i = 0; i < gen.length; ++i) {
+                        var cellCount = gen.length;
+                        for (var i = 0; i < cellCount; ++i) {
                             currentGeneration.updateCell(gen[i]);
                         }
                     }
@@ -174,7 +175,7 @@
                     };
                 })(nextGeneration);
                 
-                return setInterval(step, 300);
+                return setInterval(step, 200);
             }
             
             return {
