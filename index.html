@@ -194,8 +194,7 @@
         (function () {
             document.addEventListener('readystatechange', function () {
                 if (document.readyState === 'complete') {
-                    var runButton = document.getElementById('runButton');
-                    runButton.addEventListener('click', function (ev) {
+                    document.getElementById('runButton').addEventListener('click', function (ev) {
                         if (ev.target.dataset.running === 'true') {
                             gol.simulation.stop();
                             ev.target.innerHTML = 'Start';
