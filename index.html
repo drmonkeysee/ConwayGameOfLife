@@ -78,6 +78,7 @@
                 function getTableElement(cell) {
                     return document.getElementById(cell.getX() + 'x' + cell.getY());
                 }
+                
                 return {
                     updateCell: function (cell) {
                         gol.utility[cell.isAlive ? 'markCell' : 'clearCell'](getTableElement(cell));
@@ -114,7 +115,6 @@
                                             : y;
                             return (adjustedY * maxX) + adjustedX;
                         }
-                        
                         function getLiveNeighborCount(allCells) {
                             var liveNeighborCount = 0;
                             var neighborCount = neighborIndices.length;
@@ -169,6 +169,7 @@
                             currentGeneration.updateCell(gen[i]);
                         }
                     }
+                    
                     return function () {
                         calculate(nextGen);
                         commit(nextGen);
