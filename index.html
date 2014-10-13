@@ -90,10 +90,7 @@
             })();
             
             function init() {
-                var ecosystem = (function () {
-                    var maxX = +document.getElementById('columnCount').value || 0;
-                    var maxY = +document.getElementById('rowCount').value || 0;
-                    
+                var makeCells = (function (maxX, maxY) {
                     function makeCell(x, y) {
                         var neighborIndices = [
                             getIndex(x - 1, y - 1),
@@ -142,20 +139,18 @@
                         };
                     }
                     
-                    return {
-                        build: function () {
-                            var cells = [];
-                            for (var i = 0; i < maxY; ++i) {
-                                for (var j = 0; j < maxX; ++j) {
-                                    cells.push(makeCell(j, i));
-                                }
+                    return function () {
+                        var cells = [];
+                        for (var i = 0; i < maxY; ++i) {
+                            for (var j = 0; j < maxX; ++j) {
+                                cells.push(makeCell(j, i));
                             }
-                            return cells;
                         }
+                        return cells;
                     };
-                })();
+                })(+document.getElementById('columnCount').value || 0, +document.getElementById('rowCount').value || 0);
                 
-                var nextGeneration = ecosystem.build();
+                var nextGeneration = makeCells();
                 
                 var step = (function (nextGen) {
                     function calculate(gen) {
