@@ -124,12 +124,8 @@
                         
                         return {
                             isAlive: false,
-                            getX: function () {
-                                return x;
-                            },
-                            getY: function () {
-                                return y;
-                            },
+                            getX: function () { return x; },
+                            getY: function () { return y; },
                             update: function (allCells) {
                                 var liveCount = getLiveNeighborCount(allCells);
                                 this.isAlive = currentGeneration.isCellLive(this)
