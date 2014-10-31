@@ -81,7 +81,7 @@
                 
                 return {
                     updateCell: function (cell) {
-                        gol.utility[cell.isAlive ? 'markCell' : 'clearCell'](getTableElement(cell));
+                        gol.utility[cell.getIsAlive() ? 'markCell' : 'clearCell'](getTableElement(cell));
                     },
                     isCellLive: function (cell) {
                         return getTableElement(cell).classList.contains('marked');
@@ -122,17 +122,21 @@
                             return liveNeighborCount;
                         }
                         
-                        return {
-                            isAlive: false,
-                            getX: function () { return x; },
-                            getY: function () { return y; },
-                            update: function (allCells) {
+                        var isAlive = false;
+                        var self = {};
+                        
+                        self.getIsAlive = function () { return isAlive; };
+                        self.getX = function () { return x; };
+                        self.getY = function () { return y; };
+                        self.update = function (allCells) {
                                 var liveCount = getLiveNeighborCount(allCells);
-                                this.isAlive = currentGeneration.isCellLive(this)
-                                                ? liveCount >=2 && liveCount <= 3
-                                                : liveCount == 3;
+                                isAlive = currentGeneration.isCellLive(self)
+                                            ? liveCount >=2 && liveCount <= 3
+                                            : liveCount == 3;
                             }
                         };
+                        
+                        return self;
                     }
                     
                     return function () {
