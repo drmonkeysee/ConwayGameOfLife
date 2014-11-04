@@ -131,7 +131,7 @@
                         self.update = function (allCells) {
                             var liveCount = getLiveNeighborCount(allCells);
                             isAlive = currentGeneration.isCellLive(self)
-                                        ? liveCount >=2 && liveCount <= 3
+                                        ? liveCount >= 2 && liveCount <= 3
                                         : liveCount == 3;
                         };
                         
