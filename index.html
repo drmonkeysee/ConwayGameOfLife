@@ -53,8 +53,10 @@
         <table id="board"></table>
     </div>
     <script>
-        // utility functions to make sure dead and live cells are painted properly
-        // use these functions to set and clear cells when updating the UI
+        // Utility functions to make sure dead and live cells are painted properly
+        // use these functions to set and clear cells when updating the UI.
+        // Add onBoardRedraw(board) to this object if any simulation setup/cleanup
+        // is needed when the board is redrawn by page refresh or slider change.
         var gol = {
             utility: {
                 markCell: function (tableCell) {
@@ -125,6 +127,10 @@
                     tableCell.classList.toggle('marked');
                 }
                 
+                if (gol.utility.onBoardRedraw) {
+                    gol.utility.onBoardRedraw(board);
+                }
+
                 while (board.lastChild) {
                     board.removeChild(board.lastChild);
                 }
