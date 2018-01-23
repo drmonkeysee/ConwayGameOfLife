@@ -2,7 +2,7 @@
 
 HTML scaffolding for implementing Conway's Game of Life in JavaScript.
 
-NOTE: this branch contains a full implementation of the Game of Life so it can be hosted here: https://drmonkeysee.github.io/ConwayGameOfLife/
+**NOTE:** this branch contains a full implementation of the Game of Life so it can be hosted here: https://drmonkeysee.github.io/ConwayGameOfLife/
 
 To start from scratch check out the `exercise` branch of this repository.
 
