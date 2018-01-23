@@ -2,6 +2,10 @@
 
 HTML scaffolding for implementing Conway's Game of Life in JavaScript.
 
+NOTE: this branch contains a full implementation of the Game of Life so it can be hosted here: http://drmonkeysee.github.io/ConwayGameOfLife/
+
+To start from scratch check out the `exercise` branch of this repository.
+
 ## What do I do?
 
 **index.html** provides a simple Game of Life cell grid and a set of UI controls. Your goal is to implement the Game of Life simulation logic.
