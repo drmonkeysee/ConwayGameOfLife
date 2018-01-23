@@ -31,17 +31,17 @@
     <h1>Conway's Game of Life</h1>
     <div id="boardControls">
         <label for="cellSize">Cell Size:</label>
-        <input id="cellSize" type="range" min="1" max="20" value="10" />
+        <input id="cellSize" data-redraws="1" type="range" min="1" max="20" value="10" />
         <output for="cellSize" id="cellSizeOutput"></output>
         <label for="cellSkew">Random Cell %</label>
         <input id="cellSkew" type="range" min="0" max="100" value="50" />
         <output for="cellSkew" id="cellSkewOutput"></output>
         <br>
         <label for="rowCount">Row Count</label>
-        <input id="rowCount" type="range" min="10" max="80" value="30" />
+        <input id="rowCount" data-redraws="1" type="range" min="10" max="80" value="30" />
         <output for="rowCount" id="rowCountOutput"></output>
         <label for="columnCount">Column Count</label>
-        <input id="columnCount" type="range" min="10" max="150" value="60" />
+        <input id="columnCount" data-redraws="1" type="range" min="10" max="150" value="60" />
         <output for="columnCount" id="columnCountOutput"></output>
     </div>
     <div id="runControls">
@@ -88,9 +88,11 @@
                     input.addEventListener('input', function (ev) {
                         document.getElementById(ev.target.id + 'Output').innerHTML = ev.target.value;
                     });
-                    input.addEventListener('change', function () {
-                        drawBoard();
-                    });
+                    if (input.dataset.redraws) {
+                        input.addEventListener('change', function () {
+                            drawBoard();
+                        });
+                    }
                     input.dispatchEvent(new Event('input'));
                 }
             }
