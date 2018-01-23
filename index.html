@@ -186,17 +186,29 @@
         })();
         
         (function () {
+            function stopSim(button) {
+                gol.simulation.stop();
+                button.innerHTML = 'Start';
+                button.dataset.running = false;
+            }
+
+            function startSim(button) {
+                button.innerHTML = 'Stop';
+                button.dataset.running = true;
+                gol.simulation.start();
+            }
+            
+            gol.utility.onBoardRedraw = function (board) {
+                stopSim(document.getElementById('runButton'));
+            };
+            
             document.addEventListener('readystatechange', function () {
                 if (document.readyState === 'complete') {
                     document.getElementById('runButton').addEventListener('click', function (ev) {
                         if (ev.target.dataset.running === 'true') {
-                            gol.simulation.stop();
-                            ev.target.innerHTML = 'Start';
-                            ev.target.dataset.running = false;
+                            stopSim(ev.target);
                         } else {
-                            ev.target.innerHTML = 'Stop';
-                            ev.target.dataset.running = true;
-                            gol.simulation.start();
+                            startSim(ev.target);
                         }
                     });
                 }
